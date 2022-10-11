@@ -28,7 +28,7 @@ int main(){
         Delspace(p);
         if(is_variable(line)){
             int length=strlen(line);
-            char copy[length-2];
+            char copy[100];
 //            cout<<strlen(copy)<<endl<<length-2;
             for(int i=2;i<length;i++){
                 copy[i-2]=line[i];
