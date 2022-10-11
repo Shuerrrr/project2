@@ -70,6 +70,7 @@ bool is_operator(char op){
     }
 }
 
+
 void addzeros(char line[]){
     if(strlen(line)==1)
         return;
