@@ -8,11 +8,17 @@ bool is_operator(char op);
 int priority(char op);
 double calculate(double a,double b,char op);
 double calculateline(char line[]);
+void Delspace(char *source);
+bool is_variable(char line[]);
 
 int main(){
     char line[100];
     cout<<"Please enter the expression you want to calculate: "<<endl;
-    while(cin>>line){
+    while(1){
+        cin.getline(line,100);
+        char *p;
+        p=line;
+        Delspace(p);
         double ans=calculateline(line);
         cout<<ans<<endl;
     }
@@ -178,4 +184,21 @@ double calculateline(char line[]){
                 num.push(temp);
     }
     return num.top();
+}
+
+void Delspace(char *source){
+char *dest=source;
+while(*source!=0){
+if (*source!=' '){
+*dest++=*source++;
+}
+else{
+source++;
+}
+} 
+*dest++=0;//字符串结束符
+}
+
+bool is_variable(char line[]){
+
 }
