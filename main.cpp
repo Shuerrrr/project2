@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <algorithm>
 #include <cmath>
 #include <stack>
 using namespace std;
@@ -11,6 +12,8 @@ double calculateline(char line[]);
 void Delspace(char *source);
 bool is_variable(char line[]);
 int is_in_variable(char ch);
+bool ContainFunction(string line,string func);
+string SolveFunction(string line);
 
 char variable[26];
 int variablesize=0;
@@ -18,6 +21,7 @@ double variablevalue[26];
 
 int main(){
     char line[100];
+    string x=line;
     cout<<"Please enter the expression you want to calculate: "<<endl;
     char *p;
     while(1){
@@ -69,7 +73,6 @@ bool is_operator(char op){
         return 0;
     }
 }
-
 
 void addzeros(char line[]){
     if(strlen(line)==1)
@@ -260,4 +263,52 @@ int is_in_variable(char ch){
             return i;
     }
     return -1;
+}
+
+bool ContainFunction(string line,string func){
+    if(line.find(func)!=string::npos)
+        return true;
+    
+    else
+        return false;
+}
+
+string SolveFunction(string line){
+    while(ContainFunction(line,"sqrt(")){
+        int start=line.find("sqrt(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+5,end-start-5);
+        string before=line.substr(start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-5];
+        strcpy(num,func.c_str());
+        if(calculateline(num)<0){
+            cout<<"NaN"<<endl;
+            main();
+        }
+        string addnum=to_string(sqrt(calculateline(num)));
+        line=before+addnum+after;
+    }
+    while(ContainFunction(line,"pow(")){
+        int start=line.find("pow(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+       
+    }
 }
