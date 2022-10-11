@@ -156,7 +156,7 @@ double calculateline(char line[]){
                 }
                 if((line[i]<'0'||line[i]>'9')&&line[i]!='.'&&line[i]!='\0'){
                     cout<<"Erorr, you have entered the variable that undefined"<<endl;
-                    return NULL;
+                    main();
                 }
                 while(!(is_operator(line[i]))&&line[i]!='.'&&line[i]!='\0')//当字符是数字时则循环计算
                 {
