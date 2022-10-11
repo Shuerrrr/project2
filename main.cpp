@@ -10,15 +10,43 @@ double calculate(double a,double b,char op);
 double calculateline(char line[]);
 void Delspace(char *source);
 bool is_variable(char line[]);
+int is_in_variable(char ch);
+
+char variable[26];
+int variablesize=0;
+double variablevalue[26];
 
 int main(){
     char line[100];
     cout<<"Please enter the expression you want to calculate: "<<endl;
+    char *p;
     while(1){
         cin.getline(line,100);
-        char *p;
+//        cout<<strlen(line)<<endl;//
+
         p=line;
         Delspace(p);
+        if(is_variable(line)){
+            int length=strlen(line);
+            char copy[length-2];
+//            cout<<strlen(copy)<<endl<<length-2;
+            for(int i=2;i<length;i++){
+                copy[i-2]=line[i];
+            }
+            copy[length-2]=0;
+            int index=is_in_variable(line[0]);
+            if(index!=-1){
+                variablevalue[index]=calculateline(copy);
+            }
+            else{
+            variable[variablesize]=line[0];
+            // variable[variablesize+1]=0;
+            variablevalue[variablesize]=calculateline(copy);//存储变量的值
+            // variablevalue[variablesize+1]=0;
+            variablesize++;
+            }
+            continue;
+        }
         double ans=calculateline(line);
         cout<<ans<<endl;
     }
@@ -106,16 +134,30 @@ double calculateline(char line[]){
     op.push('#');
     num.push('#');
     int i=0;
-    if(strlen(line)==1){
+    int index=is_in_variable(line[0]);
+    if(strlen(line)==1&&line[0]>='0'&&line[0]<='9'){
         num.push(line[0]-'0');
         return num.top();
     }
+    else if(strlen(line)==1&&index!=-1){
+        num.push(variablevalue[index]);
+        return num.top();
+    }
+    
     while(i<=strlen(line)-1){
         if(!(is_operator(line[i]))&&line[i]!='\0'){//一个数字的读取存栈
             double sum=0;
             int po=-1;
-            if(line[i]!='.'){
-                
+            index=is_in_variable(line[i]);
+                if(index!=-1){//是否是变量
+                    num.push(variablevalue[index]);
+                    i++;
+                    continue;
+                }
+                if((line[i]<'0'||line[i]>'9')&&line[i]!='.'&&line[i]!='\0'){
+                    cout<<"Erorr, you have entered the variable that undefined"<<endl;
+                    return NULL;
+                }
                 while(!(is_operator(line[i]))&&line[i]!='.'&&line[i]!='\0')//当字符是数字时则循环计算
                 {
                     sum=sum*10+line[i]-'0';
@@ -129,7 +171,6 @@ double calculateline(char line[]){
                     po--;
                     i++;
                 }
-            }
             }
             num.push(sum);
         }
@@ -200,5 +241,22 @@ source++;
 }
 
 bool is_variable(char line[]){
+    if(strlen(line)<3){
+        return false;
+    }
+    if(!(line[0]>='a'&&line[0]<='z')){//字符若不是小字母
+        return false;
+    }
+    if(line[1]!='='){
+        return false;
+    }
+    return true;
+}
 
+int is_in_variable(char ch){
+    for(int i=0;i<variablesize;i++){
+        if(variable[i]==ch)
+            return i;
+    }
+    return -1;
 }
