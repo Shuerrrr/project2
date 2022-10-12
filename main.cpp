@@ -30,6 +30,7 @@ int main(){
 
         p=line;
         Delspace(p);
+        
         if(is_variable(line)){
             int length=strlen(line);
             char copy[100];
@@ -132,6 +133,9 @@ double calculate(double a,double b,char op){
 }
 
 double calculateline(char line[]){
+    string source=line;
+    string strline=SolveFunction(source);
+    strcpy(line,strline.c_str());
     stack<char> op;
     stack<double> num;
     addzeros(line);
@@ -284,7 +288,7 @@ string SolveFunction(string line){
             }
         }
         string func=line.substr(start+5,end-start-5);
-        string before=line.substr(start);
+        string before=line.substr(0,start);
         string after=line.substr(end+1,line.length()-end-1);
         char num[end-start-5];
         strcpy(num,func.c_str());
@@ -294,6 +298,7 @@ string SolveFunction(string line){
         }
         string addnum=to_string(sqrt(calculateline(num)));
         line=before+addnum+after;
+ //       cout<<addnum<<endl;
     }
     while(ContainFunction(line,"pow(")){
         int start=line.find("pow(");
@@ -305,10 +310,188 @@ string SolveFunction(string line){
             }
         }
         string func=line.substr(start+4,end-start-4);
-        string before=line.substr(start);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        int Douhao=func.find(',');
+        string num1=func.substr(0,Douhao);
+        string num2=func.substr(Douhao+1,end-Douhao-1);
+        char cnum1[Douhao],cnum2[end-Douhao-1];
+        strcpy(cnum1,num1.c_str());
+        strcpy(cnum2,num2.c_str());
+        string addnum=to_string(pow(calculateline(cnum1),calculateline(cnum2)));
+        line=before+addnum+after;    
+    }
+    while(ContainFunction(line,"max(")){
+        int start=line.find("max(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        int Douhao=func.find(',');
+        string num1=func.substr(0,Douhao);
+        string num2=func.substr(Douhao+1,end-Douhao-1);
+        char cnum1[Douhao],cnum2[end-Douhao-1];
+        strcpy(cnum1,num1.c_str());
+        strcpy(cnum2,num2.c_str());
+        string addnum=to_string(max(calculateline(cnum1),calculateline(cnum2)));
+        line=before+addnum+after;    
+    }
+    while(ContainFunction(line,"min(")){
+        int start=line.find("min(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        int Douhao=func.find(',');
+        string num1=func.substr(0,Douhao);
+        string num2=func.substr(Douhao+1,end-Douhao-1);
+        char cnum1[Douhao],cnum2[end-Douhao-1];
+        strcpy(cnum1,num1.c_str());
+        strcpy(cnum2,num2.c_str());
+        string addnum=to_string(min(calculateline(cnum1),calculateline(cnum2)));
+        line=before+addnum+after;    
+    }
+    while(ContainFunction(line,"abs(")){
+        int start=line.find("abs(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
         string after=line.substr(end+1,line.length()-end-1);
         char num[end-start-4];
         strcpy(num,func.c_str());
-       
+        string addnum=to_string(abs(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
     }
+    while(ContainFunction(line,"sin(")){
+        int start=line.find("sin(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+        string addnum=to_string(sin(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"cos(")){
+        int start=line.find("cos(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+        string addnum=to_string(cos(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"tan(")){
+        int start=line.find("tan(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+        string addnum=to_string(tan(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"exp(")){
+        int start=line.find("exp(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+        string addnum=to_string(exp(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"log(")){
+        int start=line.find("log(");
+        int end;
+        for(int i=start;i<line.length();i++){
+            if(line[i]==')'){
+                end=i;
+                break;
+            }
+        }
+        string func=line.substr(start+4,end-start-4);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        char num[end-start-4];
+        strcpy(num,func.c_str());
+        string addnum=to_string(log(calculateline(num)));
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"PI")){
+        int start=line.find("PI");
+        int end=start+1;
+        
+        string func=line.substr(start,2);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        string addnum=to_string(M_PI);
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    while(ContainFunction(line,"E")){
+        int start=line.find("E");
+        int end=start;
+        
+        string func=line.substr(start,1);
+        string before=line.substr(0,start);
+        string after=line.substr(end+1,line.length()-end-1);
+        string addnum=to_string(M_E);
+        line=before+addnum+after;
+ //       cout<<addnum<<endl;
+    }
+    return line;
 }
