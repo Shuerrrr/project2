@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stack>
+#include "BigFloat.h"
 using namespace std;
 
 bool is_operator(char op);
@@ -14,6 +15,8 @@ bool is_variable(char line[]);
 int is_in_variable(char ch);
 bool ContainFunction(string line,string func);
 string SolveFunction(string line);
+string BigFloat_calculate(string strline);
+char findop(string line);
 
 char variable[26];
 int variablesize=0;
@@ -21,7 +24,6 @@ double variablevalue[26];
 
 int main(){
     char line[100];
-    string x=line;
     cout<<"Please enter the expression you want to calculate: "<<endl;
     char *p;
     while(1){
@@ -30,7 +32,7 @@ int main(){
 
         p=line;
         Delspace(p);
-        
+        string strline=line;
         if(is_variable(line)){
             int length=strlen(line);
             char copy[100];
@@ -51,6 +53,16 @@ int main(){
             variablesize++;
             }
             continue;
+        }
+        if(strline.find("mode2")!=string::npos){
+            cout<<"this is mode2"<<endl;
+            while (strline.find("mode1")==string::npos){
+                cin.getline(line,100);
+                p=line;
+                Delspace(p);
+                strline=line;
+                cout<<BigFloat_calculate(strline)<<endl;
+            }
         }
         double ans=calculateline(line);
         cout<<ans<<endl;
@@ -130,6 +142,7 @@ double calculate(double a,double b,char op){
     default:
         break;
     }
+    return 0;
 }
 
 double calculateline(char line[]){
@@ -494,4 +507,64 @@ string SolveFunction(string line){
  //       cout<<addnum<<endl;
     }
     return line;
+}
+
+string BigFloat_calculate(string strline)
+{
+    BigFloat strnum1,strnum2,result;
+    char op=findop(strline);
+    int splitx;
+    switch (op)
+    {
+    case 0:
+        return strline;
+    case '+':
+        splitx=strline.find('+');
+        strnum1=strline.substr(0,splitx);
+        strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
+        result=strnum1+strnum2;
+        return result.ToString();
+    case '-':
+        splitx=strline.find('-');
+        strnum1=strline.substr(0,splitx);
+        strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
+        result=strnum1-strnum2;
+        return result.ToString();
+    case '*':
+        splitx=strline.find('*');
+        strnum1=strline.substr(0,splitx);
+        strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
+        result=strnum1*strnum2;
+        return result.ToString();
+    case '/':
+        splitx=strline.find('/');
+        strnum1=strline.substr(0,splitx);
+        strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
+        result=strnum1/strnum2;
+        return result.ToString();
+           
+    default:
+        break;
+    }
+    return 0;
+}
+
+char findop(string line)
+{
+    size_t op[4];
+    op[0]=line.find('+');
+    op[1]=line.find('-');
+    op[2]=line.find('*');
+    op[3]=line.find('/');
+    size_t min=op[0];
+    for(int i=0;i<4;i++){
+        if(op[i]<min)
+            min=op[i];
+    }
+    if(min==string::npos)return 0;
+    if(min==op[0])return '+';
+    if(min==op[1])return '-';
+    if(min==op[2])return '*';
+    if(min==op[3])return '/';
+    return 0;
 }
