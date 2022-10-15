@@ -17,14 +17,14 @@ bool ContainFunction(string line,string func);
 string SolveFunction(string line);
 string BigFloat_calculate(string strline);
 char findop(string line);
+bool count_brackets_equal(string line);
 
 char variable[26];
 int variablesize=0;
 double variablevalue[26];
 
 int main(){
-    try
-    {
+
     char line[100];
     cout<<"Please enter the expression you want to calculate: "<<endl;
     char *p;
@@ -119,10 +119,6 @@ int main(){
         double ans=calculateline(line);
         cout<<ans<<endl;
     }
-    throw 1;}catch(const std::exception& e)
-    {
-        std::cout << 'a';
-    }
     return 0;
 }
 
@@ -202,6 +198,7 @@ double calculate(double a,double b,char op){
 }
 
 double calculateline(char line[]){
+    int flag;
     string source=line;
     string strline=SolveFunction(source);
     strcpy(line,strline.c_str());
@@ -212,6 +209,11 @@ double calculateline(char line[]){
     num.push('#');
     int i=0;
     int index=is_in_variable(line[0]);
+    if(count_brackets_equal(strline)){
+        cout<<"brackets wrong"<<endl;
+        main();
+    }
+
     if(strlen(line)==1&&line[0]>='0'&&line[0]<='9'){
         num.push(line[0]-'0');
         return num.top();
@@ -291,8 +293,15 @@ double calculateline(char line[]){
             }
         }
     }
+    if (num.size()-op.size()!=1)
+    {
+        cout<<"input wrong"<<endl;
+        main();
+    }
+    
     while (op.top()!='#')
     {
+        
         double t1=num.top();
                 num.pop();
                 double t2=num.top();
@@ -627,4 +636,36 @@ char findop(string line)
     if(min==op[2])return '*';
     if(min==op[3])return '/';
     return 0;
+}
+bool count_brackets_equal(string line){
+    long long i=-1;
+    int j;
+    int index1=-1,index2=-1;
+    int cnt1=0,cnt2=0;
+    while(line.find('(',index1+1)!=string::npos){
+        cnt1++;
+        index1=line.find('(',index1+1);
+    }
+    while(line.find(')',index2+1)!=string::npos){
+        cnt2++;
+        index2=line.find(')',index2+1);
+    }
+    if(cnt1!=cnt2)return true;
+    
+    while (line.find('(',i+1)!=string::npos)
+    {
+        i=line.find('(');
+        if(i!=string::npos){
+            if(line.find(')',i+1)!=string::npos){
+            j=line.find(')',i+1);
+            line.erase(j,j+1);
+            }
+            else return true;
+        }
+        else{
+            return true;
+        }
+    }
+    if(line.find(')')!=string::npos)return true;
+    return false;
 }
