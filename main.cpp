@@ -520,25 +520,25 @@ string BigFloat_calculate(string strline)
         return strline;
     case '+':
         splitx=strline.find('+');
-        strnum1=strline.substr(0,splitx);
+        strnum1=BigFloat_calculate(strline.substr(0,splitx));
         strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
         result=strnum1+strnum2;
         return result.ToString();
     case '-':
         splitx=strline.find('-');
-        strnum1=strline.substr(0,splitx);
+        strnum1=BigFloat_calculate(strline.substr(0,splitx));
         strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
         result=strnum1-strnum2;
         return result.ToString();
     case '*':
         splitx=strline.find('*');
-        strnum1=strline.substr(0,splitx);
+        strnum1=BigFloat_calculate(strline.substr(0,splitx));
         strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
         result=strnum1*strnum2;
         return result.ToString();
     case '/':
         splitx=strline.find('/');
-        strnum1=strline.substr(0,splitx);
+        strnum1=BigFloat_calculate(strline.substr(0,splitx));
         strnum2=BigFloat_calculate(strline.substr(splitx+1,strline.length()-splitx-1));
         result=strnum1/strnum2;
         return result.ToString();
@@ -558,6 +558,10 @@ char findop(string line)
     op[3]=line.find('/');
     size_t min=op[0];
     for(int i=0;i<4;i++){
+        if(i<=1&&op[i]!=string::npos){
+            min=op[i];
+            break;
+        }
         if(op[i]<min)
             min=op[i];
     }
