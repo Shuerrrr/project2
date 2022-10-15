@@ -23,16 +23,68 @@ int variablesize=0;
 double variablevalue[26];
 
 int main(){
+    try
+    {
     char line[100];
     cout<<"Please enter the expression you want to calculate: "<<endl;
     char *p;
     while(1){
         cin.getline(line,100);
 //        cout<<strlen(line)<<endl;//
-
+        if(strlen(line)<1)
+        {
+            cout<<"input null"<<endl;
+            return 0;
+        }
         p=line;
         Delspace(p);
         string strline=line;
+//检测注释
+        if(strline.find('#')!=string::npos){
+            string str1=strline.substr(0,strline.find('#'));
+            strline=str1;
+            strcpy(line,strline.c_str());
+            if(strlen(line)<1)
+        {
+            main();
+        }
+        }
+        if(strline.find("/*")!=string::npos&&strline.find("*/")!=string::npos){
+            string str1=strline.substr(0,strline.find("/*"));
+            string str2=strline.substr(strline.find("*/")+2,strline.length()-strline.find("*/")-2);
+            strline=str1+str2;
+            strcpy(line,strline.c_str());
+            if(strlen(line)<1)
+        {
+            main();
+        }
+        }
+        if(strline.find("/*")!=string::npos){
+                string str1=strline.substr(0,strline.find('/'));
+                strline=str1;
+                strcpy(line,strline.c_str());
+                if(strlen(line)<1)
+        {
+            cout<<"input null"<<endl;
+            return 0;
+        }
+            while(1){
+                char line2[100];
+                cin.getline(line2,100);
+                if(strlen(line)<1)
+            {
+                cout<<"input null"<<endl;
+                return 0;
+            }
+                char *p2;
+                p2=line2;
+                Delspace(p2);
+                string strline2=line2;
+                if(strline2.find("*/")!=string::npos)
+                    break;
+            }
+        }
+
         if(is_variable(line)){
             int length=strlen(line);
             char copy[100];
@@ -66,6 +118,10 @@ int main(){
         }
         double ans=calculateline(line);
         cout<<ans<<endl;
+    }
+    throw 1;}catch(const std::exception& e)
+    {
+        std::cout << 'a';
     }
     return 0;
 }
