@@ -18,6 +18,7 @@ string SolveFunction(string line);//将数学函数进行计算并代替成相�
 string BigFloat_calculate(string strline);
 char findop(string line);
 bool count_brackets_equal(string line);//括号输入是否合法判断
+void addzeros(char line[]);//补零操作(-1)->(0-1)方便后续判断
 
 char variable[26];
 int variablesize=0;
@@ -38,6 +39,7 @@ int main(){
         }
         p=line;
         Delspace(p);
+        addzeros(p);
         string strline=line;
 //检测注释
         if(strline.find('#')!=string::npos){
@@ -107,7 +109,7 @@ int main(){
             continue;
         }
         if(strline.find("mode2")!=string::npos){
-            cout<<"this is mode2"<<endl;
+            cout<<"This is mode2"<<endl;
             while (strline.find("mode1")==string::npos){
                 cin.getline(line,100);
                 p=line;
@@ -115,6 +117,8 @@ int main(){
                 strline=line;
                 cout<<BigFloat_calculate(strline)<<endl;
             }
+            cout<<"This is mode1"<<endl;
+            main();
         }
         double ans=calculateline(line);
         cout<<ans<<endl;
@@ -140,22 +144,19 @@ bool is_operator(char op){
 }
 
 void addzeros(char line[]){
-    if(strlen(line)==1)
+    string str=line;
+    int length=str.length();
+    if(length==1)
         return;
-    if(line[0]=='-'){
-        for(int i=strlen(line)-1;i>=0;i--){
-            line[i+1]=line[i];
-        }
-        line[0]='0';
+    if(str[0]=='-'){
+        str=str.insert(0,"0");
     }
-    for(int i=0;i<strlen(line)-1;i++){
-        if(line[i]=='('&&line[i+1]=='-'){
-            for(int j=strlen(line)-1;j>i;j--){
-                line[j+1]=line[j];
-            }
-            line[i+1]=='0';
+    for(int i=0;i<str.length()-1;i++){
+        if(str[i]=='('&&str[i+1]=='-'){
+            str=str.insert(i+1,"0");
         }
     }
+    strcpy(line,str.c_str());
 }
 
 int priority(char op){
@@ -639,7 +640,8 @@ char findop(string line)
 }
 bool count_brackets_equal(string line){
     long long i=-1;
-    int j;
+    long long j;
+    int x;
     int index1=-1,index2=-1;
     int cnt1=0,cnt2=0;
     while(line.find('(',index1+1)!=string::npos){
@@ -654,17 +656,13 @@ bool count_brackets_equal(string line){
     
     while (line.find('(',i+1)!=string::npos)
     {
-        i=line.find('(');
-        if(i!=string::npos){
-            if(line.find(')',i+1)!=string::npos){
-            j=line.find(')',i+1);
-            line.erase(j,j+1);
+            j=line.find('(',i+1);
+            if(line.find(')',j+1)!=string::npos){
+            x=line.find(')',j+1);
+            line.erase(x,x+1);
             }
-            else return true;
-        }
-        else{
-            return true;
-        }
+   //         else return true;
+            i=j;
     }
     if(line.find(')')!=string::npos)return true;
     return false;
