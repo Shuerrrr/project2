@@ -6,18 +6,18 @@
 #include "BigFloat.h"
 using namespace std;
 
-bool is_operator(char op);
-int priority(char op);
-double calculate(double a,double b,char op);
+bool is_operator(char op);//对表达式内符号是否为运算符的判断
+int priority(char op);//对运算符的优先级进行赋值
+double calculate(double a,double b,char op);//对两个数字一个运算符的小表达式进行计算
 double calculateline(char line[]);
-void Delspace(char *source);
-bool is_variable(char line[]);
-int is_in_variable(char ch);
-bool ContainFunction(string line,string func);
-string SolveFunction(string line);
+void Delspace(char *source);//对表达式内空格的删除
+bool is_variable(char line[]);//判断用户输入是否为定义变量语句
+int is_in_variable(char ch);//判断用户输入的变量是否已经被定义并赋值
+bool ContainFunction(string line,string func);//判断是否含有数学函数
+string SolveFunction(string line);//将数学函数进行计算并代替成相应的数值并返回字符串
 string BigFloat_calculate(string strline);
 char findop(string line);
-bool count_brackets_equal(string line);
+bool count_brackets_equal(string line);//括号输入是否合法判断
 
 char variable[26];
 int variablesize=0;
