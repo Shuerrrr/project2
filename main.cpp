@@ -25,22 +25,24 @@ int variablesize=0;
 double variablevalue[26];
 
 int main(){
-
-    char line[100];
     cout<<"Please enter the expression you want to calculate: "<<endl;
-    char *p;
     while(1){
-        cin.getline(line,100);
-//        cout<<strlen(line)<<endl;//
+        string strline;
+        char *p;
+        getline(cin,strline);
+        char line[strline.length()];
+        strcpy(line,strline.c_str());
+        p=line;
+        Delspace(p);
         if(strlen(line)<1)
         {
             cout<<"input null"<<endl;
             return 0;
         }
-        p=line;
-        Delspace(p);
         addzeros(p);
-        string strline=line;
+        strline=line;
+        
+
 //检测注释
         if(strline.find('#')!=string::npos){
             string str1=strline.substr(0,strline.find('#'));

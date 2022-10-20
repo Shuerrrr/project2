@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/mnt/c/C++pj/project2/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/a.dir/BigFloat.cc.o -c /mnt/c/C++pj/project2/BigFloat.cc",
+  "file": "/mnt/c/C++pj/project2/BigFloat.cc"
+},
+{
+  "directory": "/mnt/c/C++pj/project2/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/a.dir/main.cpp.o -c /mnt/c/C++pj/project2/main.cpp",
+  "file": "/mnt/c/C++pj/project2/main.cpp"
+}
+]

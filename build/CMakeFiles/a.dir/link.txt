@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/a.dir/BigFloat.cc.o CMakeFiles/a.dir/main.cpp.o -o a 
